@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Веселая Ферма - Telegram Mini App</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font: Inter & Fredoka for playful farm vibes -->
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -19,33 +16,17 @@
             -webkit-user-select: none;
             overflow-x: hidden;
         }
-        .playful-font {
-            font-family: 'Fredoka', cursive;
-        }
+        .playful-font { font-family: 'Fredoka', cursive; }
         @keyframes bounce-gentle {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-6px); }
         }
-        .animate-bounce-gentle {
-            animation: bounce-gentle 2s infinite ease-in-out;
-        }
-        @keyframes float-up {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-40px) scale(1.2); }
-        }
-        .floating-text {
-            animation: float-up 0.8s forwards ease-out;
-        }
-        ::-webkit-scrollbar {
-            display: none;
-        }
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+        .animate-bounce-gentle { animation: bounce-gentle 2s infinite ease-in-out; }
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="flex flex-col h-screen max-w-md mx-auto bg-gradient-to-b from-amber-900 via-stone-900 to-slate-900 shadow-2xl relative overflow-hidden">
 
-    <!-- TOP HEADER / STATS BAR -->
     <header class="bg-stone-900/90 backdrop-blur-md px-4 py-3 border-b border-amber-700/40 flex justify-between items-center z-20">
         <div class="flex items-center space-x-2">
             <div class="w-9 h-9 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 font-bold shadow-inner text-lg">
@@ -56,14 +37,11 @@
                 <p class="text-xs text-slate-400">Уровень <span id="level-display">1</span></p>
             </div>
         </div>
-
         <div class="flex items-center space-x-3">
-            <!-- Coins -->
             <div class="bg-stone-800 border border-amber-500/50 px-3 py-1 rounded-full flex items-center space-x-1.5 shadow-md">
                 <span class="text-amber-400 text-sm"><i class="fa-solid fa-coins"></i></span>
-                <span id="coins-display" class="playful-font font-bold text-amber-200 text-sm">250</span>
+                <span id="coins-display" class="playful-font font-bold text-amber-200 text-sm">350</span>
             </div>
-            <!-- Water -->
             <div class="bg-stone-800 border border-sky-500/50 px-3 py-1 rounded-full flex items-center space-x-1.5 shadow-md">
                 <span class="text-sky-400 text-sm"><i class="fa-solid fa-droplet"></i></span>
                 <span id="water-display" class="playful-font font-bold text-sky-200 text-sm">10/10</span>
@@ -71,219 +49,283 @@
         </div>
     </header>
 
-    <!-- MAIN CONTENT CONTAINER (TABS) -->
-    <main class="flex-1 overflow-y-auto relative pb-20">
-        
-        <!-- TAB 1: FARM FIELD (ГРЯДКИ И ЖИВОТНЫЕ НА ПОЛЯНКЕ) -->
-        <section id="tab-farm" class="p-4 space-y-4 tab-content">
-            <div class="bg-gradient-to-r from-emerald-800 to-green-700 rounded-2xl p-4 shadow-lg border border-emerald-500/30 relative overflow-hidden">
-                <div class="absolute -right-4 -bottom-6 text-emerald-900/40 text-8xl font-black pointer-events-none">
-                    <i class="fa-solid fa-wheat-awn"></i>
-                </div>
+    <main class="flex-1 overflow-y-auto relative pb-20 p-4 space-y-4">
+        <!-- ФЕРМА -->
+        <section id="tab-farm" class="space-y-4 tab-content">
+            <div class="bg-gradient-to-r from-emerald-800 to-green-700 rounded-2xl p-4 shadow-lg border border-emerald-500/30">
                 <h2 class="playful-font text-xl font-bold text-emerald-100 mb-1">Деревенский дворик</h2>
-                <p class="text-xs text-emerald-200 mb-3">Сажайте зерно на грядках и наблюдайте за питомцами на интерактивной полянке!</p>
-                <div class="flex space-x-2">
-                    <button onclick="waterAllCrops()" class="bg-sky-500 hover:bg-sky-600 active:scale-95 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow transition flex items-center space-x-1">
-                        <i class="fa-solid fa-cloud-rain"></i>
-                        <span>Полить всё (2 воды)</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- INTERACTIVE PASTURE CANVAS / GRAPHIC FIELD -->
-            <div class="bg-gradient-to-b from-emerald-600 via-green-700 to-emerald-900 rounded-3xl p-3 border-2 border-emerald-400/50 shadow-xl relative overflow-hidden">
-                <div class="flex justify-between items-center px-2 mb-2">
-                    <h3 class="playful-font font-bold text-xs text-emerald-100 flex items-center space-x-1.5">
-                        <i class="fa-solid fa-mountain-sun text-yellow-300"></i>
-                        <span>Зеленая полянка (Интерактивно)</span>
-                    </h3>
-                    <span class="text-[10px] bg-emerald-950/80 text-emerald-200 px-2 py-0.5 rounded-full border border-emerald-500/30">Тапайте по животным для сбора</span>
-                </div>
-                
-                <!-- Canvas Container for pasture graphics -->
-                <div class="relative w-full h-56 rounded-2xl overflow-hidden shadow-inner border border-emerald-500/30 bg-cover bg-center" style="background: radial-gradient(circle at center, #34d399 0%, #047857 70%, #064e3b 100%);">
-                    <div class="absolute top-2 left-3 text-emerald-300/40 text-lg"><i class="fa-solid fa-tree"></i></div>
-                    <div class="absolute top-3 right-6 text-emerald-300/40 text-xl"><i class="fa-solid fa-tree"></i></div>
-                    <div class="absolute bottom-2 left-10 text-yellow-300/40 text-xs"><i class="fa-solid fa-seedling"></i></div>
-                    <div class="absolute bottom-4 right-12 text-pink-300/40 text-xs"><i class="fa-solid fa-spa"></i></div>
-                    
-                    <!-- Dynamic Pasture Elements (Animals rendered here) -->
-                    <div id="pasture-animals-container" class="absolute inset-0 w-full h-full">
-                        <!-- Populated by JS -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Crops Grid -->
-            <div>
-                <div class="flex justify-between items-center mb-2">
-                    <h3 class="playful-font font-semibold text-sm text-amber-200 flex items-center space-x-1.5">
-                        <i class="fa-solid fa-seedling text-emerald-400"></i>
-                        <span>Грядки пшеницы</span>
-                    </h3>
-                    <span class="text-xs text-slate-400">Нажмите для сбора/посадки</span>
-                </div>
-                <div id="crops-grid" class="grid grid-cols-3 gap-3">
-                    <!-- Dynamic Crops -->
-                </div>
-            </div>
-
-            <!-- Animals Management List -->
-            <div>
-                <div class="flex justify-between items-center mb-2">
-                    <h3 class="playful-font font-semibold text-sm text-amber-200 flex items-center space-x-1.5">
-                        <i class="fa-solid fa-paw text-amber-400"></i>
-                        <span>Питомцы на ферме</span>
-                    </h3>
-                    <span class="text-xs text-slate-400">Статус сбора</span>
-                </div>
-                <div id="animals-grid" class="grid grid-cols-2 gap-3">
-                    <!-- Dynamic Animals -->
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 2: BREEDING & LAB (СКРЕЩИВАНИЕ) -->
-        <section id="tab-breed" class="p-4 space-y-4 tab-content hidden">
-            <div class="bg-gradient-to-r from-rose-800 to-pink-800 rounded-2xl p-4 shadow-lg border border-pink-500/30">
-                <h2 class="playful-font text-xl font-bold text-pink-100 mb-1">Лаборатория скрещивания</h2>
-                <p class="text-xs text-pink-200">Соединяйте двух одинаковых животных, чтобы получить элитных супер-производителей с удвоенной скоростью сбора!</p>
-            </div>
-
-            <div class="bg-stone-800/80 border border-stone-700 rounded-2xl p-4 space-y-3">
-                <h3 class="playful-font font-semibold text-sm text-pink-300">Выберите вид для скрещивания:</h3>
-                <div class="grid grid-cols-2 gap-2" id="breed-select-grid"></div>
-                <div class="pt-3 border-t border-stone-700 flex flex-col items-center space-y-2">
-                    <p class="text-xs text-slate-400 text-center" id="breed-info-text">Выберите питомца для улучшения уровня породы.</p>
-                    <button onclick="performBreed()" id="breed-btn" disabled class="w-full bg-pink-600 hover:bg-pink-700 disabled:bg-stone-700 disabled:text-slate-500 text-white font-bold py-2.5 rounded-xl shadow transition text-sm flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-dna"></i>
-                        <span>Скрестить (Требуется 2 шт.)</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="bg-stone-800/80 border border-stone-700 rounded-2xl p-4 space-y-3">
-                <h3 class="playful-font font-semibold text-sm text-amber-300">Алхимия продукции</h3>
-                <p class="text-xs text-slate-400">Смешивайте собранные ресурсы для создания премиальных товаров:</p>
-                <div id="crafting-recipes-list" class="space-y-2"></div>
-            </div>
-        </section>
-
-        <!-- TAB 3: FACTORY & PRODUCTION (ПЕРЕРАБОТКА) -->
-        <section id="tab-factory" class="p-4 space-y-4 tab-content hidden">
-            <div class="bg-gradient-to-r from-amber-800 to-orange-800 rounded-2xl p-4 shadow-lg border border-amber-500/30">
-                <h2 class="playful-font text-xl font-bold text-amber-100 mb-1">Завод переработки</h2>
-                <p class="text-xs text-amber-200">Превращайте сырье в ценную продукцию на продажу!</p>
-            </div>
-            <div id="factory-list" class="space-y-3"></div>
-        </section>
-
-        <!-- TAB 4: WAREHOUSE / INVENTORY (СКЛАД) -->
-        <section id="tab-warehouse" class="p-4 space-y-4 tab-content hidden">
-            <div class="bg-gradient-to-r from-slate-800 to-indigo-900 rounded-2xl p-4 shadow-lg border border-indigo-500/30 flex justify-between items-center">
-                <div>
-                    <h2 class="playful-font text-xl font-bold text-indigo-100 mb-1">Склад фермы</h2>
-                    <p class="text-xs text-indigo-200">Собранные ресурсы и животные в запасе.</p>
-                </div>
-                <div class="bg-indigo-950/80 px-3 py-2 rounded-xl border border-indigo-400/30 text-center">
-                    <span class="block text-xs text-indigo-300">Вместимость</span>
-                    <span id="warehouse-capacity" class="playful-font font-bold text-white text-sm">0 / 40</span>
-                </div>
-            </div>
-
-            <div class="flex space-x-2">
-                <button onclick="sellAllGoods()" class="flex-1 bg-amber-500 hover:bg-amber-600 active:scale-95 text-stone-900 font-bold py-2.5 rounded-xl shadow transition text-sm flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-cash-register"></i>
-                    <span>Продать всю продукцию</span>
+                <p class="text-xs text-emerald-200 mb-3">Сажайте зерно на грядках и собирайте продукцию с животных!</p>
+                <button onclick="waterAllCrops()" class="bg-sky-500 hover:bg-sky-600 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow transition">
+                    <i class="fa-solid fa-cloud-rain"></i> Полить всё (2 воды)
                 </button>
             </div>
 
+            <!-- Полянка с животными -->
+            <div class="bg-gradient-to-b from-emerald-600 via-green-700 to-emerald-900 rounded-3xl p-3 border-2 border-emerald-400/50 shadow-xl">
+                <h3 class="playful-font font-bold text-xs text-emerald-100 mb-2">Зеленая полянка (Тапайте для сбора)</h3>
+                <div id="pasture-animals-container" class="relative w-full h-48 rounded-2xl overflow-hidden bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-around">
+                    <!-- Рендерится через JS -->
+                </div>
+            </div>
+
+            <!-- Грядки -->
+            <div>
+                <h3 class="playful-font font-semibold text-sm text-amber-200 mb-2">Грядки пшеницы</h3>
+                <div id="crops-grid" class="grid grid-cols-3 gap-3"></div>
+            </div>
+
+            <!-- Список животных -->
+            <div>
+                <h3 class="playful-font font-semibold text-sm text-amber-200 mb-2">Питомцы на ферме</h3>
+                <div id="animals-grid" class="grid grid-cols-2 gap-3"></div>
+            </div>
+        </section>
+
+        <!-- СКЛАД -->
+        <section id="tab-warehouse" class="space-y-4 tab-content hidden">
+            <div class="bg-gradient-to-r from-slate-800 to-indigo-900 rounded-2xl p-4 shadow-lg border border-indigo-500/30 flex justify-between items-center">
+                <div>
+                    <h2 class="playful-font text-xl font-bold text-indigo-100">Склад фермы</h2>
+                    <p class="text-xs text-indigo-200">Собранные ресурсы</p>
+                </div>
+                <button onclick="sellAllGoods()" class="bg-amber-500 text-stone-900 font-bold px-3 py-2 rounded-xl text-xs shadow">Продать всё</button>
+            </div>
             <div id="inventory-grid" class="grid grid-cols-3 gap-3"></div>
         </section>
 
-        <!-- TAB 5: SHOP (МАГАЗИН) -->
-        <section id="tab-shop" class="p-4 space-y-4 tab-content hidden">
-            <div class="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-2xl p-4 shadow-lg border border-purple-500/30">
-                <h2 class="playful-font text-xl font-bold text-purple-100 mb-1">Лавка фермера</h2>
-                <p class="text-xs text-purple-200">Покупайте новых животных, увеличивайте запасы воды и расширяйте грядки.</p>
-            </div>
+        <!-- МАГАЗИН -->
+        <section id="tab-shop" class="space-y-4 tab-content hidden">
+            <h2 class="playful-font text-xl font-bold text-purple-100">Лавка фермера</h2>
             <div id="shop-list" class="space-y-3"></div>
         </section>
-
     </main>
 
-    <!-- FLOATING NOTIFICATION / TOAST -->
+    <!-- Уведомления -->
     <div id="toast-container" class="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center space-y-2 w-full max-w-xs"></div>
 
-    <!-- BOTTOM NAVIGATION BAR -->
+    <!-- Нижнее меню -->
     <nav class="absolute bottom-0 left-0 right-0 bg-stone-900/95 backdrop-blur-md border-t border-amber-700/40 px-1 py-2 flex justify-around items-center z-30">
-        <button onclick="switchTab('farm')" id="nav-btn-farm" class="flex flex-col items-center space-y-1 text-amber-400 transition nav-btn px-2 py-1 rounded-xl">
-            <i class="fa-solid fa-wheat-awn text-base"></i>
-            <span class="text-[9px] playful-font font-semibold">Ферма</span>
+        <button onclick="switchTab('farm')" id="nav-btn-farm" class="flex flex-col items-center space-y-1 text-amber-400 nav-btn px-3 py-1">
+            <i class="fa-solid fa-wheat-awn text-base"></i><span class="text-[9px] playful-font font-semibold">Ферма</span>
         </button>
-        <button onclick="switchTab('breed')" id="nav-btn-breed" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-amber-300 transition nav-btn px-2 py-1 rounded-xl">
-            <i class="fa-solid fa-dna text-base"></i>
-            <span class="text-[9px] playful-font font-semibold">Скрестить</span>
+        <button onclick="switchTab('warehouse')" id="nav-btn-warehouse" class="flex flex-col items-center space-y-1 text-slate-400 nav-btn px-3 py-1">
+            <i class="fa-solid fa-warehouse text-base"></i><span class="text-[9px] playful-font font-semibold">Склад</span>
         </button>
-        <button onclick="switchTab('factory')" id="nav-btn-factory" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-amber-300 transition nav-btn px-2 py-1 rounded-xl">
-            <i class="fa-solid fa-industry text-base"></i>
-            <span class="text-[9px] playful-font font-semibold">Завод</span>
-        </button>
-        <button onclick="switchTab('warehouse')" id="nav-btn-warehouse" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-amber-300 transition nav-btn px-2 py-1 rounded-xl">
-            <i class="fa-solid fa-warehouse text-base"></i>
-            <span class="text-[9px] playful-font font-semibold">Склад</span>
-        </button>
-        <button onclick="switchTab('shop')" id="nav-btn-shop" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-amber-300 transition nav-btn px-2 py-1 rounded-xl">
-            <i class="fa-solid fa-store text-base"></i>
-            <span class="text-[9px] playful-font font-semibold">Лавка</span>
+        <button onclick="switchTab('shop')" id="nav-btn-shop" class="flex flex-col items-center space-y-1 text-slate-400 nav-btn px-3 py-1">
+            <i class="fa-solid fa-store text-base"></i><span class="text-[9px] playful-font font-semibold">Лавка</span>
         </button>
     </nav>
 
-    <!-- JAVASCRIPT GAME LOGIC -->
     <script>
         const gameState = {
             coins: 350,
             water: 10,
             maxWater: 10,
-            level: 1,
-            selectedBreedTarget: null,
             crops: [
-                { id: 0, state: 'empty', progress: 0, timeNeeded: 4 },
-                { id: 1, state: 'empty', progress: 0, timeNeeded: 4 },
-                { id: 2, state: 'empty', progress: 0, timeNeeded: 4 },
-                { id: 3, state: 'empty', progress: 0, timeNeeded: 4 },
-                { id: 4, state: 'empty', progress: 0, timeNeeded: 4 },
-                { id: 5, state: 'empty', progress: 0, timeNeeded: 4 },
+                { id: 0, state: 'empty', progress: 0, timeNeeded: 3 },
+                { id: 1, state: 'empty', progress: 0, timeNeeded: 3 },
+                { id: 2, state: 'empty', progress: 0, timeNeeded: 3 },
+                { id: 3, state: 'empty', progress: 0, timeNeeded: 3 }
             ],
             animals: [
-                { id: 'chicken', name: 'Курочка Ряба', icon: 'fa-feather', product: 'egg', productName: 'Яйцо', productionTime: 6, timer: 6, ready: false, count: 1, tier: 1, x: 25, y: 35, vx: 0.5, vy: 0.3 },
-                { id: 'rabbit', name: 'Кролик Крош', icon: 'fa-carrot', product: 'carrot_fur', productName: 'Шерстка', productionTime: 10, timer: 10, ready: false, count: 1, tier: 1, x: 70, y: 30, vx: -0.4, vy: 0.4 },
-                { id: 'cow', name: 'Буренка', icon: 'fa-cow', product: 'milk', productName: 'Молоко', productionTime: 16, timer: 16, ready: false, count: 0, tier: 1, x: 45, y: 65, vx: 0.3, vy: -0.2 },
-                { id: 'pig', name: 'Пятачок', icon: 'fa-piggy-bank', product: 'truffle', productName: 'Трюфель', productionTime: 24, timer: 24, ready: false, count: 0, tier: 1, x: 75, y: 70, vx: -0.3, vy: -0.3 }
+                { id: 'chicken', name: 'Курочка', icon: 'fa-feather', product: 'egg', productName: 'Яйцо', timer: 5, productionTime: 5, ready: true, count: 1 },
+                { id: 'rabbit', name: 'Кролик', icon: 'fa-carrot', product: 'fur', productName: 'Шерстка', timer: 8, productionTime: 8, ready: true, count: 1 }
             ],
-            inventory: {
-                wheat: 4,
-                egg: 2,
-                carrot_fur: 1,
-                milk: 0,
-                truffle: 0,
-                flour: 0,
-                omelet: 0,
-                royal_cheese: 0,
-                super_elixir: 0
-            },
-            factories: [
-                { id: 'mill', name: 'Мельница', desc: 'Зерно ➔ Мука', input: 'wheat', inputAmount: 2, output: 'flour', outputAmount: 1, time: 5, timer: 0, crafting: false },
-                { id: 'kitchen', name: 'Кухня', desc: 'Яйцо + Мука ➔ Омлет', input: 'egg', inputAmount: 2, output: 'omelet', outputAmount: 1, time: 8, timer: 0, crafting: false }
-            ],
+            inventory: { wheat: 4, egg: 2, fur: 1 },
             shopItems: [
-                { id: 'buy_chicken', name: 'Купить курочку', desc: 'Несет свежие яйца', cost: 120, type: 'animal', target: 'chicken' },
-                { id: 'buy_rabbit', name: 'Купить кролика', desc: 'Дает мягкую шерстку', cost: 200, type: 'animal', target: 'rabbit' },
-                { id: 'buy_cow', name: 'Купить корову', desc: 'Дает полезное молоко', cost: 350, type: 'animal', target: 'cow' },
-                { id: 'buy_pig', name: 'Купить свинью', desc: 'Ищет редкие трюфели', cost: 600, type: 'animal', target: 'pig' },
-                { id: 'upgrade_water', name: 'Бочка воды +5', desc: 'Максимум запаса воды', cost: 150, type: 'water' },
-                { id: 'add_crop', name: 'Доп. грядка', desc: 'Открывает дополнительную грядку', cost: 200, type: 'crop' }
+                { id: 'buy_chicken', name: 'Купить курочку', cost: 100, type: 'animal', target: 'chicken', desc: 'Несет яйца' },
+                { id: 'buy_rabbit', name: 'Купить кролика', cost: 150, type: 'animal', target: 'rabbit', desc: 'дает шерстку' }
             ]
         };
 
-        <!-- update 2 -->
+        const itemNames = {
+            wheat: { name: 'Пшеница', icon: 'fa-wheat-awn', price: 10 },
+            egg: { name: 'Яйцо', icon: 'fa-egg', price: 25 },
+            fur: { name: 'Шерстка', icon: 'fa-socks', price: 40 }
+        };
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.replace('text-amber-400', 'text-slate-400'));
+            document.getElementById(`nav-btn-${tabName}`).classList.replace('text-slate-400', 'text-amber-400');
+            updateUI();
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = 'bg-emerald-600 text-white px-3 py-1.5 rounded-xl shadow text-xs font-semibold';
+            t.innerText = msg;
+            container.appendChild(t);
+            setTimeout(() => t.remove(), 2000);
+        }
+
+        function updateUI() {
+            document.getElementById('coins-display').innerText = gameState.coins;
+            document.getElementById('water-display').innerText = `${gameState.water}/${gameState.maxWater}`;
+            renderCrops();
+            renderAnimals();
+            renderPasture();
+            renderInventory();
+            renderShop();
+        }
+
+        function renderCrops() {
+            const grid = document.getElementById('crops-grid');
+            grid.innerHTML = '';
+            gameState.crops.forEach(c => {
+                let bg = 'bg-stone-800 border-stone-700';
+                let text = '<span class="text-[10px] text-slate-400">Пусто (Сажать)</span>';
+                if(c.state === 'planted') {
+                    bg = 'bg-amber-950/40 border-amber-600';
+                    text = `<span class="text-[10px] text-amber-200">Растет (${c.progress}с)</span>`;
+                } else if(c.state === 'ready') {
+                    bg = 'bg-emerald-900/60 border-emerald-500 animate-pulse';
+                    text = '<span class="text-[10px] font-bold text-emerald-200">Собрать!</span>';
+                }
+                const div = document.createElement('div');
+                div.className = `${bg} border rounded-2xl p-3 flex flex-col items-center justify-center h-20 shadow cursor-pointer active:scale-95`;
+                div.onclick = () => handleCrop(c.id);
+                div.innerHTML = `<i class="fa-solid fa-seedling text-emerald-400 mb-1"></i>${text}`;
+                grid.appendChild(div);
+            });
+        }
+
+        function handleCrop(id) {
+            const c = gameState.crops.find(x => x.id === id);
+            if(c.state === 'empty' && gameState.water >= 2) {
+                gameState.water -= 2;
+                c.state = 'planted';
+                c.progress = c.timeNeeded;
+                showToast('Зерно посажено!');
+            } else if(c.state === 'ready') {
+                c.state = 'empty';
+                gameState.inventory.wheat += 2;
+                showToast('+2 Пшеницы!');
+            }
+            updateUI();
+        }
+
+        function waterAllCrops() {
+            gameState.crops.forEach(c => {
+                if(c.state === 'empty' && gameState.water >= 2) {
+                    gameState.water -= 2;
+                    c.state = 'planted';
+                    c.progress = c.timeNeeded;
+                }
+            });
+            updateUI();
+        }
+
+        function renderAnimals() {
+            const grid = document.getElementById('animals-grid');
+            grid.innerHTML = '';
+            gameState.animals.forEach(a => {
+                const div = document.createElement('div');
+                div.className = 'bg-stone-800 border border-stone-700 rounded-2xl p-3 flex items-center justify-between shadow';
+                div.innerHTML = `
+                    <div><h4 class="font-bold text-xs text-white">${a.name}</h4><p class="text-[10px] text-slate-400">${a.ready ? 'Готово!' : a.timer+'с'}</p></div>
+                    <button onclick="collectAnimal('${a.id}')" class="px-2 py-1 rounded-xl text-xs font-bold ${a.ready ? 'bg-amber-500 text-stone-900' : 'bg-stone-700 text-stone-500'}">${a.ready ? 'Сбор' : 'Ждите'}</button>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function renderPasture() {
+            const container = document.getElementById('pasture-animals-container');
+            container.innerHTML = '';
+            gameState.animals.forEach(a => {
+                const div = document.createElement('div');
+                div.className = `flex flex-col items-center cursor-pointer p-2 rounded-2xl bg-amber-500/20 border border-amber-400/50 ${a.ready ? 'animate-bounce-gentle' : ''}`;
+                div.onclick = () => collectAnimal(a.id);
+                div.innerHTML = `
+                    <i class="fa-solid ${a.icon} text-2xl text-amber-300 mb-1"></i>
+                    <span class="text-[10px] font-bold text-white">${a.name} ${a.ready ? '(Собрать!)' : ''}</span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function collectAnimal(id) {
+            const a = gameState.animals.find(x => x.id === id);
+            if(a && a.ready) {
+                a.ready = false;
+                a.timer = a.productionTime;
+                gameState.inventory[a.product] += a.count;
+                showToast(`+${a.count} ${a.productName}!`);
+                updateUI();
+            }
+        }
+
+        function renderInventory() {
+            const grid = document.getElementById('inventory-grid');
+            grid.innerHTML = '';
+            Object.keys(gameState.inventory).forEach(k => {
+                if(!itemNames[k]) return;
+                const div = document.createElement('div');
+                div.className = 'bg-stone-800 border border-stone-700 rounded-2xl p-3 flex flex-col items-center shadow';
+                div.innerHTML = `<i class="fa-solid ${itemNames[k].icon} text-amber-400 text-lg mb-1"></i><span class="font-bold text-xs text-white">${gameState.inventory[k]}</span><span class="text-[10px] text-slate-400">${itemNames[k].name}</span>`;
+                grid.appendChild(div);
+            });
+        }
+
+        function sellAllGoods() {
+            let earned = 0;
+            Object.keys(gameState.inventory).forEach(k => {
+                if(itemNames[k]) {
+                    earned += gameState.inventory[k] * itemNames[k].price;
+                    gameState.inventory[k] = 0;
+                }
+            });
+            gameState.coins += earned;
+            showToast(`Продано на ${earned} монет!`);
+            updateUI();
+        }
+
+        function renderShop() {
+            const list = document.getElementById('shop-list');
+            list.innerHTML = '';
+            gameState.shopItems.forEach(i => {
+                const div = document.createElement('div');
+                div.className = 'bg-stone-800 border border-stone-700 rounded-2xl p-3 flex justify-between items-center';
+                div.innerHTML = `<div><h4 class="font-bold text-xs text-white">${i.name}</h4><p class="text-[10px] text-amber-400">${i.cost} монет</p></div><button onclick="buy('${i.id}')" class="bg-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl">Купить</button>`;
+                list.appendChild(div);
+            });
+        }
+
+        function buy(id) {
+            const item = gameState.shopItems.find(x => x.id === id);
+            if(gameState.coins >= item.cost) {
+                gameState.coins -= item.cost;
+                const an = gameState.animals.find(x => x.id === item.target);
+                if(an) an.count++;
+                showToast('Куплено!');
+                updateUI();
+            } else {
+                showToast('Мало монет!');
+            }
+        }
+
+        // Таймер игры
+        setInterval(() => {
+            gameState.crops.forEach(c => {
+                if(c.state === 'planted') {
+                    c.progress--;
+                    if(c.progress <= 0) c.state = 'ready';
+                }
+            });
+            gameState.animals.forEach(a => {
+                if(!a.ready) {
+                    a.timer--;
+                    if(a.timer <= 0) a.ready = true;
+                }
+            });
+            if(Math.random() < 0.3 && gameState.water < gameState.maxWater) gameState.water++;
+            updateUI();
+        }, 1000);
+
+        updateUI();
+    </script>
+</body>
+</html>
