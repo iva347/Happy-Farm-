@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -103,7 +102,6 @@
                 
                 <!-- Canvas Container for pasture graphics -->
                 <div class="relative w-full h-56 rounded-2xl overflow-hidden shadow-inner border border-emerald-500/30 bg-cover bg-center" style="background: radial-gradient(circle at center, #34d399 0%, #047857 70%, #064e3b 100%);">
-                    <!-- Decorative background elements (trees, fence, flowers) -->
                     <div class="absolute top-2 left-3 text-emerald-300/40 text-lg"><i class="fa-solid fa-tree"></i></div>
                     <div class="absolute top-3 right-6 text-emerald-300/40 text-xl"><i class="fa-solid fa-tree"></i></div>
                     <div class="absolute bottom-2 left-10 text-yellow-300/40 text-xs"><i class="fa-solid fa-seedling"></i></div>
@@ -154,9 +152,7 @@
 
             <div class="bg-stone-800/80 border border-stone-700 rounded-2xl p-4 space-y-3">
                 <h3 class="playful-font font-semibold text-sm text-pink-300">Выберите вид для скрещивания:</h3>
-                <div class="grid grid-cols-2 gap-2" id="breed-select-grid">
-                    <!-- Populated via JS -->
-                </div>
+                <div class="grid grid-cols-2 gap-2" id="breed-select-grid"></div>
                 <div class="pt-3 border-t border-stone-700 flex flex-col items-center space-y-2">
                     <p class="text-xs text-slate-400 text-center" id="breed-info-text">Выберите питомца для улучшения уровня породы.</p>
                     <button onclick="performBreed()" id="breed-btn" disabled class="w-full bg-pink-600 hover:bg-pink-700 disabled:bg-stone-700 disabled:text-slate-500 text-white font-bold py-2.5 rounded-xl shadow transition text-sm flex items-center justify-center space-x-2">
@@ -166,13 +162,10 @@
                 </div>
             </div>
 
-            <!-- Product Mixing / Alchemy -->
             <div class="bg-stone-800/80 border border-stone-700 rounded-2xl p-4 space-y-3">
                 <h3 class="playful-font font-semibold text-sm text-amber-300">Алхимия продукции</h3>
                 <p class="text-xs text-slate-400">Смешивайте собранные ресурсы для создания премиальных товаров:</p>
-                <div id="crafting-recipes-list" class="space-y-2">
-                    <!-- Crafting items -->
-                </div>
+                <div id="crafting-recipes-list" class="space-y-2"></div>
             </div>
         </section>
 
@@ -182,10 +175,7 @@
                 <h2 class="playful-font text-xl font-bold text-amber-100 mb-1">Завод переработки</h2>
                 <p class="text-xs text-amber-200">Превращайте сырье в ценную продукцию на продажу!</p>
             </div>
-
-            <div id="factory-list" class="space-y-3">
-                <!-- Factories -->
-            </div>
+            <div id="factory-list" class="space-y-3"></div>
         </section>
 
         <!-- TAB 4: WAREHOUSE / INVENTORY (СКЛАД) -->
@@ -208,9 +198,7 @@
                 </button>
             </div>
 
-            <div id="inventory-grid" class="grid grid-cols-3 gap-3">
-                <!-- Inventory -->
-            </div>
+            <div id="inventory-grid" class="grid grid-cols-3 gap-3"></div>
         </section>
 
         <!-- TAB 5: SHOP (МАГАЗИН) -->
@@ -219,10 +207,7 @@
                 <h2 class="playful-font text-xl font-bold text-purple-100 mb-1">Лавка фермера</h2>
                 <p class="text-xs text-purple-200">Покупайте новых животных, увеличивайте запасы воды и расширяйте грядки.</p>
             </div>
-
-            <div id="shop-list" class="space-y-3">
-                <!-- Shop items -->
-            </div>
+            <div id="shop-list" class="space-y-3"></div>
         </section>
 
     </main>
@@ -256,7 +241,6 @@
 
     <!-- JAVASCRIPT GAME LOGIC -->
     <script>
-        // --- GAME STATE ---
         const gameState = {
             coins: 350,
             water: 10,
@@ -271,7 +255,6 @@
                 { id: 4, state: 'empty', progress: 0, timeNeeded: 4 },
                 { id: 5, state: 'empty', progress: 0, timeNeeded: 4 },
             ],
-            // Animals list with pasture coordinates (x, y percentages)
             animals: [
                 { id: 'chicken', name: 'Курочка Ряба', icon: 'fa-feather', product: 'egg', productName: 'Яйцо', productionTime: 6, timer: 6, ready: false, count: 1, tier: 1, x: 25, y: 35, vx: 0.5, vy: 0.3 },
                 { id: 'rabbit', name: 'Кролик Крош', icon: 'fa-carrot', product: 'carrot_fur', productName: 'Шерстка', productionTime: 10, timer: 10, ready: false, count: 1, tier: 1, x: 70, y: 30, vx: -0.4, vy: 0.4 },
@@ -303,202 +286,4 @@
             ]
         };
 
-        const itemNames = {
-            wheat: { name: 'Пшеница', icon: 'fa-wheat-awn', price: 10 },
-            egg: { name: 'Яйцо', icon: 'fa-egg', price: 25 },
-            carrot_fur: { name: 'Шерстка', icon: 'fa-socks', price: 40 },
-            milk: { name: 'Молоко', icon: 'fa-glass-water', price: 70 },
-            truffle: { name: 'Трюфель', icon: 'fa-gem', price: 130 },
-            flour: { name: 'Мука', icon: 'fa-sack-dollar', price: 30 },
-            omelet: { name: 'Омлет', icon: 'fa-utensils', price: 90 },
-            royal_cheese: { name: 'Элитный Сыр', icon: 'fa-cheese', price: 220 },
-            super_elixir: { name: 'Эликсир Удачи', icon: 'fa-flask', price: 350 }
-        };
-
-        // --- NAVIGATION ---
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-amber-400');
-                btn.classList.add('text-slate-400');
-            });
-            document.getElementById(`nav-btn-${tabName}`).classList.remove('text-slate-400');
-            document.getElementById(`nav-btn-${tabName}`).classList.add('text-amber-400');
-            
-            if(tabName === 'breed') {
-                renderBreedTab();
-            }
-        }
-
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const bgCol = type === 'success' ? 'bg-emerald-600 border-emerald-400' : (type === 'error' ? 'bg-rose-600 border-rose-400' : 'bg-amber-600 border-amber-400');
-            toast.className = `${bgCol} text-white px-4 py-2 rounded-xl shadow-lg border text-xs font-semibold flex items-center space-x-2 transition transform duration-300`->
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 3: FACTORY & PRODUCTION (ПЕРЕРАБОТКА) -->
-        <section id="tab-factory" class="p-4 space-y-4 tab-content hidden">
-            <div class="bg-gradient-to-r from-amber-800 to-orange-800 rounded-2xl p-4 shadow-lg border border-amber-500/30">
-                <h2 class="playful-font text-xl font-bold text-amber-100 mb-1">Завод переработки</h2>
-                <p class="text-xs text-amber-200">Превращайте сырье в ценную продукцию на продажу!</p>
-            </div>
-
-            <div id="factory-list" class="space-y-3">
-                <!-- Factories -->
-            </div>
-        </section>
-
-        <!-- TAB 4: WAREHOUSE / INVENTORY (СКЛАД) -->
-        <section id="tab-warehouse" class="p-4 space-y-4 tab-content hidden">
-            <div class="bg-gradient-to-r from-slate-800 to-indigo-900 rounded-2xl p-4 shadow-lg border border-indigo-500/30 flex justify-between items-center">
-                <div>
-                    <h2 class="playful-font text-xl font-bold text-indigo-100 mb-1">Склад фермы</h2>
-                    <p class="text-xs text-indigo-200">Собранные ресурсы и животные в запасе.</p>
-                </div>
-                <div class="bg-indigo-950/80 px-3 py-2 rounded-xl border border-indigo-400/30 text-center">
-                    <span class="block text-xs text-indigo-300">Вместимость</span>
-                    <span id="warehouse-capacity" class="playful-font font-bold text-white text-sm">0 / 40</span>
-                </div>
-            </div>
-
-            <div class="flex space-x-2">
-                <button onclick="sellAllGoods()" class="flex-1 bg-amber-500 hover:bg-amber-600 active:scale-95 text-stone-900 font-bold py-2.5 rounded-xl shadow transition text-sm flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-cash-register"></i>
-                    <span>Продать всю продукцию</span>
-                </button>
-            </div>
-
-            <div id="inventory-grid" class="grid grid-cols-3 gap-3">
-                <!-- Inventory -->
-            </div>
-        </section>
-
-        <!-- TAB 5: SHOP (МАГАЗИН) -->
-        <section id="tab-shop" class="p-4 space-y-4 tab-content hidden">
-            <div class="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-2xl p-4 shadow-lg border border-purple-500/30">
-                <h2 class="playful-font text-xl font-bold text-purple-100 mb-1">Лавка фермера</h2>
-                <p class="text-xs text-purple-200">Покупайте новых животных, увеличивайте запасы воды и расширяйте грядки.</p>
-            </div>
-
-            <div id="shop-list" class="space-y-3">
-                <!-- Shop items -->
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FLOATING NOTIFICATION / TOAST -->
-    <div id="toast-container" class="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center space-y-2 w-full max-w-xs"></div>
-
-    <!-- BOTTOM NAVIGATION BAR -->
-    <nav class="absolute bottom-0 left-0 right-0 bg-stone-900/95 backdrop-blur-md border-t border-amber-700/40 px-1 py-2 flex justify-around items-center z-30">
-        <button onclick="switchTab('farm')" id="nav-btn-farm" class="flex flex-col items-center space-y-1 text-amber-400 transition nav-btn px-2 py-1 rounded-xl">
-            <i class="fa-solid fa-wheat-awn text-base"></i>
-            <span class="text-[9px] playful-font font-semibold">Ферма</span>
-        </button>
-        <button onclick="switchTab('breed')" id="nav-btn-breed" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-amber-300 transition nav-btn px-2 py-1 rounded-xl">
-            <i class="fa-solid fa-dna text-base"></i>
-            <span class="text-[9px] playful-font font-semibold">Скрестить</span>
-        </button>
-        <button onclick="switchTab('factory')" id="nav-btn-factory" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-amber-300 transition nav-btn px-2 py-1 rounded-xl">
-            <i class="fa-solid fa-industry text-base"></i>
-            <span class="text-[9px] playful-font font-semibold">Завод</span>
-        </button>
-        <button onclick="switchTab('warehouse')" id="nav-btn-warehouse" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-amber-300 transition nav-btn px-2 py-1 rounded-xl">
-            <i class="fa-solid fa-warehouse text-base"></i>
-            <span class="text-[9px] playful-font font-semibold">Склад</span>
-        </button>
-        <button onclick="switchTab('shop')" id="nav-btn-shop" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-amber-300 transition nav-btn px-2 py-1 rounded-xl">
-            <i class="fa-solid fa-store text-base"></i>
-            <span class="text-[9px] playful-font font-semibold">Лавка</span>
-        </button>
-    </nav>
-
-    <!-- JAVASCRIPT GAME LOGIC -->
-    <script>
-        // --- GAME STATE ---
-        const gameState = {
-            coins: 350,
-            water: 10,
-            maxWater: 10,
-            level: 1,
-            selectedBreedTarget: null,
-            crops: [
-                { id: 0, state: 'empty', progress: 0, timeNeeded: 4 },
-                { id: 1, state: 'empty', progress: 0, timeNeeded: 4 },
-                { id: 2, state: 'empty', progress: 0, timeNeeded: 4 },
-                { id: 3, state: 'empty', progress: 0, timeNeeded: 4 },
-                { id: 4, state: 'empty', progress: 0, timeNeeded: 4 },
-                { id: 5, state: 'empty', progress: 0, timeNeeded: 4 },
-            ],
-            // Animals list with pasture coordinates (x, y percentages)
-            animals: [
-                { id: 'chicken', name: 'Курочка Ряба', icon: 'fa-feather', product: 'egg', productName: 'Яйцо', productionTime: 6, timer: 6, ready: false, count: 1, tier: 1, x: 25, y: 35, vx: 0.5, vy: 0.3 },
-                { id: 'rabbit', name: 'Кролик Крош', icon: 'fa-carrot', product: 'carrot_fur', productName: 'Шерстка', productionTime: 10, timer: 10, ready: false, count: 1, tier: 1, x: 70, y: 30, vx: -0.4, vy: 0.4 },
-                { id: 'cow', name: 'Буренка', icon: 'fa-cow', product: 'milk', productName: 'Молоко', productionTime: 16, timer: 16, ready: false, count: 0, tier: 1, x: 45, y: 65, vx: 0.3, vy: -0.2 },
-                { id: 'pig', name: 'Пятачок', icon: 'fa-piggy-bank', product: 'truffle', productName: 'Трюфель', productionTime: 24, timer: 24, ready: false, count: 0, tier: 1, x: 75, y: 70, vx: -0.3, vy: -0.3 }
-            ],
-            inventory: {
-                wheat: 4,
-                egg: 2,
-                carrot_fur: 1,
-                milk: 0,
-                truffle: 0,
-                flour: 0,
-                omelet: 0,
-                royal_cheese: 0,
-                super_elixir: 0
-            },
-            factories: [
-                { id: 'mill', name: 'Мельница', desc: 'Зерно ➔ Мука', input: 'wheat', inputAmount: 2, output: 'flour', outputAmount: 1, time: 5, timer: 0, crafting: false },
-                { id: 'kitchen', name: 'Кухня', desc: 'Яйцо + Мука ➔ Омлет', input: 'egg', inputAmount: 2, output: 'omelet', outputAmount: 1, time: 8, timer: 0, crafting: false }
-            ],
-            shopItems: [
-                { id: 'buy_chicken', name: 'Купить курочку', desc: 'Несет свежие яйца', cost: 120, type: 'animal', target: 'chicken' },
-                { id: 'buy_rabbit', name: 'Купить кролика', desc: 'Дает мягкую шерстку', cost: 200, type: 'animal', target: 'rabbit' },
-                { id: 'buy_cow', name: 'Купить корову', desc: 'Дает полезное молоко', cost: 350, type: 'animal', target: 'cow' },
-                { id: 'buy_pig', name: 'Купить свинью', desc: 'Ищет редкие трюфели', cost: 600, type: 'animal', target: 'pig' },
-                { id: 'upgrade_water', name: 'Бочка воды +5', desc: 'Максимум запаса воды', cost: 150, type: 'water' },
-                { id: 'add_crop', name: 'Доп. грядка', desc: 'Открывает дополнительную грядку', cost: 200, type: 'crop' }
-            ]
-        };
-
-        const itemNames = {
-            wheat: { name: 'Пшеница', icon: 'fa-wheat-awn', price: 10 },
-            egg: { name: 'Яйцо', icon: 'fa-egg', price: 25 },
-            carrot_fur: { name: 'Шерстка', icon: 'fa-socks', price: 40 },
-            milk: { name: 'Молоко', icon: 'fa-glass-water', price: 70 },
-            truffle: { name: 'Трюфель', icon: 'fa-gem', price: 130 },
-            flour: { name: 'Мука', icon: 'fa-sack-dollar', price: 30 },
-            omelet: { name: 'Омлет', icon: 'fa-utensils', price: 90 },
-            royal_cheese: { name: 'Элитный Сыр', icon: 'fa-cheese', price: 220 },
-            super_elixir: { name: 'Эликсир Удачи', icon: 'fa-flask', price: 350 }
-        };
-
-        // --- NAVIGATION ---
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-amber-400');
-                btn.classList.add('text-slate-400');
-            });
-            document.getElementById(`nav-btn-${tabName}`).classList.remove('text-slate-400');
-            document.getElementById(`nav-btn-${tabName}`).classList.add('text-amber-400');
-            
-            if(tabName === 'breed') {
-                renderBreedTab();
-            }
-        }
-
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const bgCol = type === 'success' ? 'bg-emerald-600 border-emerald-400' : (type === 'error' ? 'bg-rose-600 border-rose-400' : 'bg-amber-600 border-amber-400');
-            
+        
